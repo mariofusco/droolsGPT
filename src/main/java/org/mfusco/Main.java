@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        MortgageChat mortgageChat = new MortgageChat();
+        MortgageChat mortgageChat = new MortgageChat(args[0]);
 
         Scanner sc = new Scanner(System.in);
 

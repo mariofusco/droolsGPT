@@ -9,20 +9,28 @@ import static java.time.Duration.ofSeconds;
 
 public class MortgageChat {
 
-    private ChatLanguageModel model = OpenAiChatModel.builder()
-            .apiKey(ApiKeys.OPENAI_API_KEY)
-            .timeout(ofSeconds(60))
-            .build();
+    private final ChatLanguageModel model;
 
-    private PersonExtractor extractor = AiServices.create(PersonExtractor.class, model);
+    private final PersonExtractor extractor;
 
-    private DroolsMortgageCalculator droolsMortgageCalculator = new DroolsMortgageCalculator();
+    private final DroolsMortgageCalculator droolsMortgageCalculator = new DroolsMortgageCalculator();
 
-    private Assistant assistant = AiServices.builder(Assistant.class)
-            .chatLanguageModel(model)
-            .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-            .tools(droolsMortgageCalculator)
-            .build();
+    private final Assistant assistant;
+
+    public MortgageChat(String openAiApiKey) {
+        model = OpenAiChatModel.builder()
+                .apiKey(openAiApiKey)
+                .timeout(ofSeconds(60))
+                .build();
+
+        extractor = AiServices.create(PersonExtractor.class, model);
+
+        assistant = AiServices.builder(Assistant.class)
+                .chatLanguageModel(model)
+                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+                .tools(droolsMortgageCalculator)
+                .build();
+    }
 
     public String chat(String text) {
         return text.endsWith("?") ? assistant.chat(text) : extractPerson(text);
