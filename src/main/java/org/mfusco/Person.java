@@ -2,11 +2,7 @@ package org.mfusco;
 
 import java.time.LocalDate;
 
-public class Person {
-    private String firstName;
-    private String lastName;
-    private LocalDate birthDate;
-    private int income;
+public record Person(String firstName, String lastName, LocalDate birthDate, int income)  {
 
     @Override
     public String toString() {
@@ -16,22 +12,6 @@ public class Person {
                 ", birthDate = " + birthDate +
                 ", income = " + income +
                 " }";
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public int getIncome() {
-        return income;
     }
 
     public String getFullName() {
